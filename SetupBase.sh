@@ -49,7 +49,6 @@ apt-get install -y -qq $INSTPKG
 sudo addgroup sshlogin
 usermod -a -G sshlogin root
 mv $BASEDIR/FileSystem/etc/issue.net /etc/issue.net
-rm /etc/ssh/ssh_host_*
 if [ ! -f .is_reset_sshd ]; then
  rm /etc/ssh/ssh_host_*
  dpkg-reconfigure openssh-server 

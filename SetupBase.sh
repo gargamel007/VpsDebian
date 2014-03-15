@@ -27,8 +27,8 @@ fi
 #Fix locale issue
 sed -i "s/# fr_FR.UTF-8/fr_FR.UTF-8/g" /etc/locale.gen
 sed -i "s/# en_US.UTF-8/en_US.UTF-8/g" /etc/locale.gen
-if [ ! -f .locale_is_reset ]; then dpkg-reconfigure locales; fi
-touch .locale_is_reset
+if [ ! -f .is_reset_locale ]; then dpkg-reconfigure locales; fi
+touch .is_reset_locale
 update-locale
 
 
@@ -50,11 +50,11 @@ sudo addgroup sshlogin
 usermod -a -G sshlogin root
 mv $BASEDIR/FileSystem/etc/issue.net /etc/issue.net
 rm /etc/ssh/ssh_host_*
-if [ ! -f .sshd_is_reset ]; then
+if [ ! -f .is_reset_sshd ]; then
  rm /etc/ssh/ssh_host_*
  dpkg-reconfigure openssh-server 
 fi
-touch .sshd_is_reset
+touch .is_reset_sshd
 sed -i "s/X11Forwarding yes/X11Forwarding no/g" /etc/ssh/sshd_config
 sed -i "s/#Banner/Banner/g" /etc/ssh/sshd_config
 sed -i "s/PrintMotd no/PrintMotd yes/g" /etc/ssh/sshd_config

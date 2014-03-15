@@ -7,7 +7,7 @@
 :<<'USAGE'
 sudo apt-get -qq update && apt-get -y -qq install git
 git clone https://github.com/gargamel007/VpsDebian.git Code/VpsDebian
-sudo bash Code/VpsDebianBase/SetupBase.sh
+bash Code/VpsDebian/SetupBase.sh
 USAGE
 
 ###########################

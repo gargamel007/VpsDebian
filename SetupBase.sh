@@ -74,13 +74,22 @@ sed -i "s/\"syntax on/syntax on/g" /etc/vim/vimrc
 #Custom MOTD
 echo "" > /etc/motd
 if ! grep -q toilet /etc/init.d/motd
-    then
-    ADDMOTD="        toilet -f smmono9 -F gay \`hostname -s\` > \/var\/run\/motd.dynamic"
-    sed -i "s/# Update motd/# Update motd\n$ADDMOTD/g" /etc/init.d/motd
-    sed -i "s/uname -snrvm >/uname -srvm >>/g" /etc/init.d/motd
-  fi
+  then
+  ADDMOTD="        toilet -f smmono9 -F gay \`hostname -s\` > \/var\/run\/motd.dynamic"
+  sed -i "s/# Update motd/# Update motd\n$ADDMOTD/g" /etc/init.d/motd
+  sed -i "s/uname -snrvm >/uname -srvm >>/g" /etc/init.d/motd
+fi
 
 ### SETUP FIREWALL
+#Disable Ipv6 if found
+if `ifconfig | grep -q inet6`
+  then
+  echo "#Disable IPv6" | tee -a /etc/sysctl.conf
+  echo "net.ipv6.conf.all.disable_ipv6 = 1" | tee -a /etc/sysctl.conf
+  echo "net.ipv6.conf.default.disable_ipv6 = 1" | tee -a /etc/sysctl.conf
+  echo "net.ipv6.conf.lo.disable_ipv6 = 1" | tee -a /etc/sysctl.conf
+  sysctl -p
+fi
 sed -i "s/IPV6=yes/IPV6=no/g" /etc/default/ufw
 sed -i "s/^IPT_MODULES/#IPT_MODULES/g" /etc/default/ufw
 sed -i '/#/!{/BROADCAST/{s/^/#/g}}' /etc/ufw/after.rules

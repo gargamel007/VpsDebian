@@ -87,7 +87,7 @@ sed -i '/#/!{/BROADCAST/{s/^/#/g}}' /etc/ufw/after.rules
 sed -i '/#/!{/ ufw-not-local/{s/^/#/g}}' /etc/ufw/before.rules
 ufw allow ssh
 ufw allow 60000:61000/udp #for mosh
-ufw enable
+ufw --force enable
 sleep 2
 
 #Cleanup

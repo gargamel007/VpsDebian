@@ -27,8 +27,8 @@ fi
 #Fix locale issue
 sed -i "s/# fr_FR.UTF-8/fr_FR.UTF-8/g" /etc/locale.gen
 sed -i "s/# en_US.UTF-8/en_US.UTF-8/g" /etc/locale.gen
-if [ ! -f .is_reset_locale ]; then dpkg-reconfigure locales; fi
-touch .is_reset_locale
+if [ ! -f /tmp/is_reset_locale ]; then dpkg-reconfigure locales; fi
+touch /tmp/is_reset_locale
 update-locale
 
 
@@ -41,7 +41,7 @@ echo "UPGRADE  && INSTAL BASE TOOLS"
 apt-get -qq update && apt-get -qq -y upgrade
 INSTPKG="dialog tree vim less screen git htop software-properties-common mosh"
 #Perl is needed for rename command
-INSTPKG+=" perl sudo locate toilet"
+INSTPKG+=" perl sudo locate toilet ufw fail2ban"
 apt-get install -y -qq $INSTPKG
 
 
@@ -49,11 +49,11 @@ apt-get install -y -qq $INSTPKG
 sudo addgroup sshlogin
 usermod -a -G sshlogin root
 mv $BASEDIR/FileSystem/etc/issue.net /etc/issue.net
-if [ ! -f .is_reset_sshd ]; then
+if [ ! -f /tmp/is_reset_sshd ]; then
  rm /etc/ssh/ssh_host_*
  dpkg-reconfigure openssh-server 
 fi
-touch .is_reset_sshd
+touch /tmp/is_reset_sshd
 sed -i "s/X11Forwarding yes/X11Forwarding no/g" /etc/ssh/sshd_config
 sed -i "s/#Banner/Banner/g" /etc/ssh/sshd_config
 sed -i "s/PrintMotd no/PrintMotd yes/g" /etc/ssh/sshd_config
@@ -75,3 +75,14 @@ if ! grep -q toilet /etc/init.d/motd
     sed -i "s/# Update motd/# Update motd\n$ADDMOTD/g" /etc/init.d/motd
     sed -i "s/uname -snrvm >/uname -srvm >>/g" /etc/init.d/motd
   fi
+
+### SETUP FIREWALL
+sed -i "s/IPV6=yes/IPV6=no/g" /etc/default/ufw
+sed -i "s/^IPT_MODULES/#IPT_MODULES/g" /etc/default/ufw
+sed -i '/#/!{/BROADCAST/{s/^/#/g}}' /etc/ufw/after.rules
+sed -i '/#/!{/ ufw-not-local/{s/^/#/g}}' /etc/ufw/before.rules
+ufw allow ssh
+ufw allow 60000:61000/udp #for mosh
+ufw enable
+sleep 2
+

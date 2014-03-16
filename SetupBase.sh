@@ -23,6 +23,10 @@ if [[ $EUID -ne 0 ]]; then
   echo "You must be a root user" 2>&1
   exit 1
 fi
+#To prevent dialogs
+export DEBIAN_FRONTEND=noninteractive
+#Show all commands
+set -x
 
 #Fix locale issue
 sed -i "s/# fr_FR.UTF-8/fr_FR.UTF-8/g" /etc/locale.gen
@@ -86,3 +90,6 @@ ufw allow 60000:61000/udp #for mosh
 ufw enable
 sleep 2
 
+#Cleanup
+set +x
+unset DEBIAN_FRONTEND

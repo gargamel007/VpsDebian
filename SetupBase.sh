@@ -3,9 +3,10 @@
 ###########################
 #Doc & Usage 
 ###########################
-#This script is intended for post install on a xubuntu 13.10 system on virtual box !
+#This script is intended for post install on a Debian 7 system on VPS !
 :<<'USAGE'
-sudo apt-get -qq update && apt-get -y -qq install git
+As root run the follwing commands
+sed -i '/ackster/d' /etc/apt/sources.list && apt-get -qq update && apt-get -y -qq install git
 git clone https://github.com/gargamel007/VpsDebian.git Code/VpsDebian
 bash Code/VpsDebian/SetupBase.sh
 USAGE
@@ -34,7 +35,6 @@ sed -i "s/# en_US.UTF-8/en_US.UTF-8/g" /etc/locale.gen
 if [ ! -f /tmp/is_reset_locale ]; then dpkg-reconfigure locales; fi
 touch /tmp/is_reset_locale
 update-locale
-
 
 #Fix crappy apt-source list : remove Rackster mirror
 sed -i '/ackster/d' /etc/apt/sources.list
@@ -75,7 +75,7 @@ sed -i "s/\"syntax on/syntax on/g" /etc/vim/vimrc
 echo "" > /etc/motd
 if ! grep -q toilet /etc/init.d/motd
     then
-    ADDMOTD="        toilet -f smmono9 -F gay \`hostname\` > \/var\/run\/motd.dynamic"
+    ADDMOTD="        toilet -f smmono9 -F gay \`hostname -s\` > \/var\/run\/motd.dynamic"
     sed -i "s/# Update motd/# Update motd\n$ADDMOTD/g" /etc/init.d/motd
     sed -i "s/uname -snrvm >/uname -srvm >>/g" /etc/init.d/motd
   fi

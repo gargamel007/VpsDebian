@@ -43,7 +43,6 @@ INSTPKG+=" uuid-dev zlib1g-dev pkg-config"
 #Armstrap : kpartx
 apt-get install -y -qq $INSTPKG
 
-
 #FIXME: bellow find/fix why the version-less filename is not created automatically
 ln -sf `which arm-linux-gnueabihf-gcc-4.7 ` /usr/local/bin/arm-linux-gnueabihf-gcc
 

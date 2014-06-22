@@ -6,7 +6,7 @@
 #This script is intended for post install on a Debian 7 system on VPS !
 :<<'USAGE'
 As root run the follwing commands
-sed -i '/ackster/d' /etc/apt/sources.list && apt-get -qq update && apt-get -y -qq install git
+sed -i '/ackster/d' /etc/apt/sources.list && apt-get -qq update && apt-get -y -qq upgrade && apt-get -y -qq install git
 git clone https://github.com/gargamel007/VpsDebian.git Code/VpsDebian
 bash Code/VpsDebian/SetupBase.sh
 USAGE

@@ -46,6 +46,11 @@ apt-get install -y -qq $INSTPKG
 #FIXME: bellow find/fix why the version-less filename is not created automatically
 ln -sf `which arm-linux-gnueabihf-gcc-4.7 ` /usr/local/bin/arm-linux-gnueabihf-gcc
 
+# enable arm binary format so that the cross-architecture chroot environment will work
+test -e /proc/sys/fs/binfmt_misc/qemu-arm || update-binfmts --enable qemu-arm
+
+#Limit ccache size you need to change the $PATH to use ccache -> in script !
+ccache -M 3G
 
 set +x
 unset DEBIAN_FRONTEND

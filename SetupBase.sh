@@ -43,7 +43,7 @@ sed -i '/ackster/d' /etc/apt/sources.list
 echo "#############################"
 echo "UPGRADE  && INSTAL BASE TOOLS"
 apt-get -qq update && apt-get -qq -y upgrade
-INSTPKG="dialog tree vim less screen git htop software-properties-common mosh rsync ncdu"
+INSTPKG="dialog tree vim less screen git htop software-properties-common mosh rsync ncdu curl wget"
 #Perl is needed for rename command
 INSTPKG+=" perl sudo locate toilet ufw fail2ban autojump"
 apt-get install -y -qq $INSTPKG

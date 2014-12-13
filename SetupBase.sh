@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ###########################
-#Doc & Usage 
+#Doc & Usage
 ###########################
 #This script is intended for post install on a Debian 7 system on VPS !
 :<<'USAGE'
@@ -39,6 +39,9 @@ update-locale
 #Fix crappy apt-source list : remove Rackster mirror
 sed -i '/ackster/d' /etc/apt/sources.list
 
+#Add backports mirror
+echo "deb http://ftp.debian.org/debian/ wheezy-backports main contrib non-free" >> /etc/apt/sources.list
+
 #Install Tools
 echo "#############################"
 echo "UPGRADE  && INSTAL BASE TOOLS"
@@ -48,6 +51,11 @@ INSTPKG="dialog tree vim less screen git htop software-properties-common mosh rs
 INSTPKG+=" perl sudo locate toilet ufw fail2ban autojump zsh"
 apt-get install -y -qq $INSTPKG
 
+#Packages from backports
+apt-get install -y -qq -t wheezy-backports tmux
+
+#Cleanup
+apt-get -y -qq clean
 
 #Secure the ssh server
 sudo addgroup sshlogin
@@ -55,7 +63,7 @@ usermod -a -G sshlogin root
 mv $BASEDIR/FileSystem/etc/issue.net /etc/issue.net
 if [ ! -f /tmp/is_reset_sshd ]; then
  rm /etc/ssh/ssh_host_*
- dpkg-reconfigure openssh-server 
+ dpkg-reconfigure openssh-server
 fi
 touch /tmp/is_reset_sshd
 sed -i "s/X11Forwarding yes/X11Forwarding no/g" /etc/ssh/sshd_config
@@ -68,7 +76,7 @@ if ! grep -q AllowGroups /etc/ssh/sshd_config
 service ssh restart
 sleep 3
 
-#Tweak vim 
+#Tweak vim
 sed -i "s/\"syntax on/syntax on/g" /etc/vim/vimrc
 
 #Custom MOTD

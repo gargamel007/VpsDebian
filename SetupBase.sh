@@ -15,7 +15,7 @@ USAGE
 #Configuration
 ###########################
 BASEDIR=$(dirname $0)
-
+USERNAME="gargamel"
 
 ###########################
 #Main
@@ -45,9 +45,21 @@ echo "UPGRADE  && INSTAL BASE TOOLS"
 apt-get -qq update && apt-get -qq -y upgrade
 INSTPKG="dialog tree vim less screen git htop software-properties-common mosh rsync ncdu"
 #Perl is needed for rename command
-INSTPKG+=" perl sudo locate toilet ufw fail2ban"
+INSTPKG+=" perl sudo locate toilet ufw fail2ban curl"
+INSTPKG+=" zsh rubygems-integration autojump"
 apt-get install -y -qq $INSTPKG
+apt-get install -y -qq -t wheezy-backports "tmux"
 
+
+#Install tmuxinator
+gem install tmuxinator
+#Install Oh My Zsh
+wget --no-check-certificate http://install.ohmyz.sh -O - | sh
+cp -R /root/.oh-my-zsh/ /home/$USERNAME/
+cp /root/.zsh* /home/$USERNAME/
+chown -R $USERNAME:$USERNAME /home/$USERNAME/.*
+local ZSHPATH=`which zsh`
+su $USERNAME -c "chsh -s $ZSHPATH"
 
 #Secure the ssh server
 sudo addgroup sshlogin

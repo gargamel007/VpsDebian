@@ -37,6 +37,10 @@ if [ ! -f /tmp/is_reset_locale ]; then dpkg-reconfigure locales; fi
 touch /tmp/is_reset_locale
 update-locale
 
+#Setup Timezone
+echo "Europe/Paris" > /etc/timezone
+dpkg-reconfigure -f noninteractive tzdata
+
 #Install Tools
 echo "#############################"
 echo "UPGRADE  && INSTAL BASE TOOLS"

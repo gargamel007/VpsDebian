@@ -57,7 +57,7 @@ apt-get -y -qq clean
 #Add new user
 adduser $USERNAME
 usermod -s /bin/zsh $USERNAME
-GROUPS="adm,sudo,users,sshlogin"
+GROUPS="adm,sudo,users,sshlogin,admin"
 sudo addgroup sshlogin
 usermod -a -G $GROUPS $USERNAME
 

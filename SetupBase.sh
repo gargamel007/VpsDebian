@@ -63,7 +63,7 @@ apt-get -y -qq clean
 adduser $USERNAME
 usermod -s /bin/zsh $USERNAME
 GROUPS="adm,sudo,users,sshlogin,admin"
-sudo addgroup sshlogin
+sudo addgroup admin
 usermod -a -G $GROUPS $USERNAME
 
 #Cleanup

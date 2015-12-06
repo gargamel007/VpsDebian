@@ -39,6 +39,7 @@ update-locale
 
 #Setup Timezone
 echo "Europe/Paris" > /etc/timezone
+sleep 2
 dpkg-reconfigure -f noninteractive tzdata
 
 #Install Tools
